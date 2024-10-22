@@ -28,6 +28,7 @@ export class CharacterService {
 
   async createNew(data: CreateCharacterDto) {
     // Check if the user is authenticated and authorized
+    console.log('data', data);
     const user = await this.userService.findOneById(data.account_id);
     if (!user) {
       throw new BadRequestException('User not found or not authenticated');
@@ -94,6 +95,7 @@ export class CharacterService {
 
   async deleteById(id: number): Promise<void> {
     const player = await this.prisma.player.findUnique({ where: { id } });
+    
     if (!player) {
       throw new NotFoundException('Player not found');
     }

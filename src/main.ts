@@ -7,8 +7,8 @@ import * as bodyParser from 'body-parser';
 import { join } from 'path';
 import { useContainer } from 'class-validator';
 import { BigIntToNumberInterceptor } from './validators/BigInt.validator';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+// import helmet from 'helmet';
+// import rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,11 +17,11 @@ async function bootstrap() {
   // app.use(helmet());
 
   // Security: Rate limiting
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-  });
-  app.use(limiter);
+  // const limiter = rateLimit({
+  //   windowMs: 15 * 60 * 1000, // 15 minutes
+  //   max: 100, // Limit each IP to 100 requests per windowMs
+  // });
+  // app.use(limiter);
 
   app.enableCors();
   // app.enableCors({

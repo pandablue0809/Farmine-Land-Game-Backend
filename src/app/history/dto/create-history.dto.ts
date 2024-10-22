@@ -1,11 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateWithdrawDto {
+export class CreateHistoryDto {
 
   @IsNotEmpty({ message: 'withdraw is required' })
   @ApiProperty()
-  withdraw_funds: number;
+  player_id: number;
+
+  @IsNotEmpty({ message: 'account id is required' })
+  @ApiProperty()
+  amount: number;
 
   @IsNotEmpty({ message: 'account id is required' })
   @ApiProperty()
@@ -13,17 +17,18 @@ export class CreateWithdrawDto {
 
   @IsNotEmpty({ message: 'player id is required' })
   @ApiProperty()
-  player_id: number;
+  date: Date;
 
   @IsNotEmpty({ message: 'player id is required' })
   @ApiProperty()
-  withdraw_address: string;
+  state: number;
 
   @IsNotEmpty({ message: 'player id is required' })
   @ApiProperty()
-  created_at: Date;
+  action: string;
 
   @IsNotEmpty({ message: 'player id is required' })
   @ApiProperty()
-  withdraw_at: Date;
+  address: string;
+
 }

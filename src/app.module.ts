@@ -10,6 +10,7 @@ import { PrismaService } from './database/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { LandsModule } from './app/lands/lands.module';
 import { WithdrawModule } from './app/withdraw/withdraw.module';
+import { HistoryModule } from './app/history/history.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { WithdrawModule } from './app/withdraw/withdraw.module';
     UploadModule,
     CharacterModule,
     LandsModule,
-    WithdrawModule
+    WithdrawModule,
+    HistoryModule
   ],
   controllers: [],
   providers: [IsUnique, PrismaService],

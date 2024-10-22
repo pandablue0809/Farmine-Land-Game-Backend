@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -23,19 +20,12 @@ model Account {
   premdays        Int     @default(0)
   wallet          String? @db.VarChar(255)
   alpha_key       String? @db.VarChar(255)
-  isEmailVerified Boolean  @default(false)
-  isPhoneVerified Boolean  @default(false)
+  isEmailVerified Boolean @default(false)
+  isPhoneVerified Boolean @default(false)
   phoneNumber     String?
 
   @@index([wallet])
   @@map("accounts")
-}
-
-model Withdraw {
-  id         Int     @id @default(autoincrement())
-  player_id  Int     @default(0)
-  account_id Int     @default(0)
-  withdraw_funds   Int     @default(0)
 }
 
 model Player {
@@ -44,7 +34,6 @@ model Player {
   group_id              Int     @default(1)
   account_id            Int     @default(0)
   level                 Int     @default(1)
-  battlepass            Bytes?  @db.Blob
   vocation              Int     @default(0)
   health                Int     @default(150)
   healthmax             Int     @default(150)
@@ -55,7 +44,7 @@ model Player {
   looklegs              Int     @default(0)
   looktype              Int     @default(136)
   lookaddons            Int     @default(0)
-  direction             Int     @default(2) @db.TinyInt()
+  direction             Int     @default(2) @db.TinyInt
   maglevel              Int     @default(0)
   mana                  Int     @default(0)
   manamax               Int     @default(0)
@@ -78,9 +67,6 @@ model Player {
   onlinetime            BigInt  @default(0) @db.UnsignedBigInt
   deletion              BigInt  @default(0)
   balance               BigInt  @default(0) @db.UnsignedBigInt
-  landcoins_balance     BigInt  @default(0) @db.UnsignedBigInt
-  landcoin_withdraw     BigInt? @db.UnsignedBigInt
-  landcoin_purchase      BigInt? @db.UnsignedBigInt
   offlinetraining_time  Int     @default(43200) @db.UnsignedSmallInt
   offlinetraining_skill Int     @default(-1)
   stamina               Int     @default(400) @db.UnsignedSmallInt
@@ -98,48 +84,72 @@ model Player {
   skill_shielding_tries BigInt  @default(0) @db.UnsignedBigInt
   skill_fishing         Int     @default(0) @db.UnsignedInt
   skill_fishing_tries   BigInt  @default(0) @db.UnsignedBigInt
-  stat_str              Int     @default(0) @db.UnsignedTinyInt
-  stat_int              Int     @default(0) @db.UnsignedTinyInt
-  stat_dex              Int     @default(0) @db.UnsignedTinyInt
-  stat_vit              Int     @default(0) @db.UnsignedTinyInt
-  stat_spr              Int     @default(0) @db.UnsignedTinyInt
-  stat_wis              Int     @default(0) @db.UnsignedTinyInt
-  bronze_workerlastday  Int     @default(0)
-  bronze_workerdays     Int     @default(0)
+  isOnline              Boolean @default(false)
+  battlepass            Bytes?  @db.Blob
   bronze_worker_pass    Int     @default(0)
+  bronze_workerdays     Int     @default(0)
+  bronze_workerlastday  Int     @default(0)
+  landcoin_purchase     BigInt? @db.UnsignedBigInt
+  landcoin_withdraw     BigInt? @db.UnsignedBigInt
+  landcoins_balance     BigInt  @default(0) @db.UnsignedBigInt
   silver_worker_pass    Int     @default(0)
   silver_workerdays     Int     @default(0)
   silver_workerlastday  Int     @default(0)
-  isOnline              Boolean @default(false)
+  stat_dex              Int     @default(0) @db.UnsignedTinyInt
+  stat_int              Int     @default(0) @db.UnsignedTinyInt
+  stat_spr              Int     @default(0) @db.UnsignedTinyInt
+  stat_str              Int     @default(0) @db.UnsignedTinyInt
+  stat_vit              Int     @default(0) @db.UnsignedTinyInt
+  stat_wis              Int     @default(0) @db.UnsignedTinyInt
 
   @@map("players")
 }
 
-
 model House {
-  id             Int    @id @default(autoincrement())
+  id             Int     @id @default(autoincrement())
   owner          Int
-  paid           Int    @default(0)
-  warnings       Int    @default(0)
+  paid           Int     @default(0)
+  warnings       Int     @default(0)
   name           String
-  rent           Int    @default(0)
-  town_id        Int    @default(0)
-  bid            Int    @default(0)
-  bid_end        Int    @default(0)
-  last_bid       Int    @default(0)
-  highest_bidder Int    @default(0)
-  size           Int    @default(0)
-  beds           Int    @default(0)
-  land_zone      String @default("0")
-  land_plot      String @default("0")
-  bioma          String @default("0")
-  land_size      String @default("0")
-  plant          String @default("0")
-  harvest        String @default("0")
-  mining         String @default("0")
-  livestock      String @default("0")
-  fishing_boat   String @default("0")
-  json_data      Json?
+  rent           Int     @default(0)
+  town_id        Int     @default(0)
+  bid            Int     @default(0)
+  bid_end        Int     @default(0)
+  last_bid       Int     @default(0)
+  highest_bidder Int     @default(0)
+  size           Int     @default(0)
+  beds           Int     @default(0)
+  land_zone      String  @default("0")
+  land_plot      String  @default("0")
+  bioma          String  @default("0")
+  land_size      String  @default("0")
+  plant          String  @default("0")
+  harvest        String  @default("0")
+  mining         String  @default("0")
+  livestock      String  @default("0")
+  fishing_boat   String  @default("0")
+  json_data      String? @db.LongText
 
   @@map("houses")
+}
+
+model landcoinshistory {
+  id        Int      @id @default(autoincrement())
+  player_id Int      @default(0)
+  amount    Int      @default(0)
+  state     Int      @default(0)
+  action    String?  @db.VarChar(255)
+  date      DateTime @default(now())
+  address   String?  @db.VarChar(255)
+}
+
+model withdraw {
+  id              Int      @id @default(autoincrement())
+  player_id       Int      @default(0)
+  account_id      Int      @default(0)
+  withdraw_funds  Int      @default(0)
+  wallet_address  String?  @db.VarChar(255)
+  created_at      DateTime @default(now())
+  withdraw_at     DateTime @default(now())
+  withdraw_status Int      @default(0)
 }

@@ -5,7 +5,6 @@ import { UploadModule } from '../upload/upload.module';
 import { IsUnique } from 'src/validators/IsUnique.validator';
 import { PrismaService } from 'src/database/prisma.service';
 import { CharacterService } from '../character/character.service';
-import { JwtStrategy } from '../auth/strategy/jwt.strategy';
 
 @Module({
   controllers: [UserController],
@@ -15,7 +14,6 @@ import { JwtStrategy } from '../auth/strategy/jwt.strategy';
     IsUnique,
     PrismaService,
     CharacterService,
-    JwtStrategy,
   ],
   exports: [UserService, IsUnique],
 })
