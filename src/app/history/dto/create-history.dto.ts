@@ -31,4 +31,8 @@ export class CreateHistoryDto {
   @ApiProperty()
   address: string;
 
+  @IsNotEmpty({ message: 'player id is required' })
+  @ApiProperty()
+  hash: string;
+
 }

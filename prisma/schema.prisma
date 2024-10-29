@@ -141,6 +141,7 @@ model landcoinshistory {
   action    String?  @db.VarChar(255)
   date      DateTime @default(now())
   address   String?  @db.VarChar(255)
+  hash     String?  @db.VarChar(255)
 }
 
 model withdraw {

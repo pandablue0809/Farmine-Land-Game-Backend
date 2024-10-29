@@ -31,6 +31,7 @@ export class HistoryService {
           player_id: data.player_id,
           state: data.state,
           address: data.address,
+          hash: data.hash
         },
       });
     } catch (error) {
