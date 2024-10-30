@@ -12,17 +12,39 @@ export class AuthService {
   ) {}
 
   async login(user: LoginDto) {
-    const userJson = { name: user.name };
-    const token = await this.jwtService.signAsync(userJson);
-    const buffered = Buffer.from(token.split('.')[1], 'base64').toString();
-    const payload = JSON.parse(buffered);
-    const expiresIn = DateTime.fromMillis(payload.exp * 1000)
-      .toUTC()
-      .toISO();
-    const userLogged = await this.userService.findByUsername(user.name);
-    const { id, email, name, wallet } = userLogged;
-    const userResponse = { id, email, name, wallet };
-    return { token, expiresIn, user: userResponse };
+    try {
+      // Find the user by username
+      const userLogged = await this.userService.findByUsername(user.name);
+  
+      // Validate the password
+      const isValidPassword = await this.userService.validatePassword(
+        user.password,
+        userLogged.password
+      );
+  
+      if (!isValidPassword) {
+        throw new ForbiddenException('Invalid username or password');
+      }
+  
+      // Generate JWT token
+      const userJson = { name: user.name };
+      const token = await this.jwtService.signAsync(userJson);
+  
+      // Decode token to get expiration
+      const buffered = Buffer.from(token.split('.')[1], 'base64').toString();
+      const payload = JSON.parse(buffered);
+      const expiresIn = DateTime.fromMillis(payload.exp * 1000)
+        .toUTC()
+        .toISO();
+  
+      // Prepare user response without password
+      const { id, email, name, wallet } = userLogged;
+      const userResponse = { id, email, name, wallet };
+  
+      return { token, expiresIn, user: userResponse };
+    } catch (error) {
+      throw new ForbiddenException('Invalid username or password');
+    }
   }
 
   async validate(name: string, password: string) {
